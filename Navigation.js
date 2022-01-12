@@ -1,16 +1,16 @@
+import { useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
-import InputForm from './src/components/InputForm'
-import ItemList from './src/components/ItemList'
+import React from 'react'
+import { TouchableOpacity } from 'react-native'
 import AddScreen from './src/screens/AddScreen'
 import HomeScreen from './src/screens/HomeScreen'
 import ShowScreen from './src/screens/ShowScreen'
+import EditScreen from './src/screens/EditScreen';
 
 const { Navigator, Screen } = createNativeStackNavigator()
-
 const Navigation = () => {
+  const { navigate } = useNavigation()
   return (
     <Navigator>
       <Screen
@@ -18,22 +18,31 @@ const Navigation = () => {
         component={HomeScreen}
         options={{
           headerRight: () => {
-            <TouchableOpacity>
-              <FontAwesome name="plus" size={30} color="black" />
-            </TouchableOpacity>
+            return (
+              <TouchableOpacity onPress={() => navigate('add')}>
+                <FontAwesome style={{marginRight: 10}} name="plus" size={30} color="black" />
+              </TouchableOpacity>
+            )
           }
         }} />
       <Screen
-      name='add'
-      component={AddScreen}/>
+        name='edit'
+        component={EditScreen}
+        options={{
+          headerTitle: 'Edit User'
+        }} />
       <Screen
-       name='show'
-       component={ShowScreen}
+        name='add'
+        component={AddScreen}
+        options={{
+          headerTitle: 'Add User'
+        }} />
+      <Screen
+        name='show'
+        component={ShowScreen}
       />
     </Navigator>
   )
 }
 
 export default Navigation
-
-const styles = StyleSheet.create({})

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { MaterialCommunityIcons, Feather, Fontisto } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { getUser } from '../../redux/actions';
-const ShowScreen = ({ num, name, route, user, getUser }) => {
+const ShowScreen = ({ route, user, getUser }) => {
   useEffect(() => {
     getUser(route.params.id)
   }, [])
@@ -65,8 +65,8 @@ const ShowScreen = ({ num, name, route, user, getUser }) => {
   )
 }
 
-const mapStateToProsp = ({ User }) => {
-  return { user: User }
+const mapStateToProsp = ({ Details }) => {
+  return { user: Details }
 }
 
 export default connect(mapStateToProsp, {

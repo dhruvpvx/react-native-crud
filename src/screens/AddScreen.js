@@ -1,10 +1,12 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { addUser } from '../../redux/actions'
+import { addUser, clearUser } from '../../redux/actions'
 import InputForm from '../components/InputForm'
 
-const AddScreen = ({ addUser }) => {
+const AddScreen = ({ addUser, clearUser }) => {
+  useEffect(() => {
+    clearUser()
+  }, [])
   return (
     <InputForm
       onSubmit={addUser}
@@ -12,6 +14,7 @@ const AddScreen = ({ addUser }) => {
   )
 }
 
-export default connect(null, {addUser})(AddScreen)
-
-const styles = StyleSheet.create({})
+export default connect(null, { 
+  addUser,
+  clearUser
+ })(AddScreen)

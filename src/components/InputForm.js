@@ -1,5 +1,5 @@
 import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   View
 } from 'react-native'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { setName, setGender, setMail, setStatus, addUser } from '../../redux/actions';
+import { setName, setGender, setMail, setStatus } from '../../redux/actions';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -23,11 +23,17 @@ const InputForm = ({
   gender,
   status,
   label,
+  error,
   onSubmit,
-  uId,
-  addUser
+  uId
 }) => {
   const { pop } = useNavigation()
+  const [errors, seterrors] = useState([])
+  useEffect(() => {
+    seterrors(() => error.map(item => {
+      return [`[${item.field} ${item.message}]\n` ]
+    }))
+  }, [error])
   return (
     <KeyboardAvoidingView behavior='height' style={styles.container}>
       <TextInput
@@ -35,6 +41,7 @@ const InputForm = ({
         onChangeText={text => setName(text)}
         placeholder='Name'
         style={styles.input} />
+      <Text style={{ color: 'red', fontSize: 20, fontWeight: 'bold' }}>{errors}</Text>
       <TextInput
         value={email}
         onChangeText={text => setMail(text)}
@@ -57,7 +64,7 @@ const InputForm = ({
         iconStyle={{ borderColor: "black" }}
         onPress={(isChecked) => isChecked ? setStatus('Active') : setStatus('Inactive')}
       />
-      <TouchableOpacity onPress={() => onSubmit(name, email, gender, status, pop)}>
+      <TouchableOpacity onPress={() => onSubmit(uId, name, email, gender, status, pop)}>
         <View style={styles.btn}>
           <Text style={styles.btntext}>{label}</Text>
         </View>
@@ -67,7 +74,10 @@ const InputForm = ({
 }
 
 const mapStateToProps = ({ Details }) => {
-  const { name, email, gender, status } = Details
+  const { name, email, gender, status, error } = Details
+  if(error){
+    return { name, email, gender, status, error }
+  }
   return { name, email, gender, status }
 }
 
@@ -75,29 +85,39 @@ export default connect(mapStateToProps, {
   setName,
   setGender,
   setMail,
-  setStatus,
-  addUser
+  setStatus
 })(InputForm)
+
+InputForm.defaultProps = {
+  uId: '',
+  error: []
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 20,
+    marginHorizontal: 60,
     backgroundColor: '#ffffff',
     marginBottom: 150,
     marginTop: 80,
     borderRadius: 22,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    position: 'absolute',
+    elevation: 10,
+    paddingTop: 30
   },
   input: {
     height: 45,
     width: 300,
     borderRadius: 20,
-    borderWidth: 1,
+    marginTop: 20,
     paddingLeft: 20,
     fontSize: 20,
-    marginVertical: 20
+    marginVertical: 20,
+    marginHorizontal: 20,
+    backgroundColor: '#ffffff',
+    elevation: 5
   },
   picker: {
     marginTop: 20,

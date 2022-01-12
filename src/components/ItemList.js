@@ -2,9 +2,9 @@ import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
-import { getUser } from '../../redux/actions'
+import { deleteUser } from '../../redux/actions'
 
-const ItemList = ({ num, name, uid }) => {
+const ItemList = ({ num, name, uid, deleteUser }) => {
   const { navigate } = useNavigation()
   return (
     <View style={styles.container}>
@@ -14,24 +14,24 @@ const ItemList = ({ num, name, uid }) => {
         </Text>
       </View>
       <View style={styles.name}>
-        <Text style={{ fontSize: 20 }}>
+        <Text style={{ fontSize: 20 }}> 
           {name}
         </Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity onPress={() => navigate('show', {id: uid})}>
-          <View style={styles.btnview}>
+          <View style={{ ...styles.btnview, backgroundColor: 'lightblue' }}>
             <Text style={styles.btntext}>Show</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.btnview}>
+        <TouchableOpacity onPress={() => navigate('edit', {id: uid})}>
+          <View style={{ ...styles.btnview, backgroundColor: 'lightgrey' }}>
             <Text style={styles.btntext}>Edit</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => deleteUser(uid)}>
           <View style={{ ...styles.btnview, backgroundColor: 'red' }}>
-            <Text style={styles.btntext}>Delete</Text>
+            <Text style={{...styles.btntext, color: '#ffffff'}}>Delete</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -40,7 +40,7 @@ const ItemList = ({ num, name, uid }) => {
 }
 
 
-export default connect(null, { getUser })(ItemList)
+export default connect(null, { deleteUser })(ItemList)
 
 const styles = StyleSheet.create({
   container: {
@@ -62,8 +62,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     alignContent: 'center',
     justifyContent: 'center',
-    paddingLeft: 12,
-    backgroundColor: 'lightblue'
+    paddingLeft: 12
   },
   btntext: {
     fontWeight: 'bold'
@@ -73,6 +72,7 @@ const styles = StyleSheet.create({
     margin: 5
   },
   name: {
+    flexShrink: 1,
     padding: 10,
     margin: 5
   }

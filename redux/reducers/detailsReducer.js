@@ -1,15 +1,15 @@
-import { logIfNoNativeHook } from "react-native/Libraries/Utilities/RCTLog"
-
 const INITIAL_STATE = {
   name: '',
   email: '',
-  gender: '',
-  status: ''
+  gender: 'Male',
+  status: 'Inactive',
+  error: []
 }
 
 export default (state = INITIAL_STATE, action) => {
-  console.log(action);
   switch (action.type) {
+    case 'GET_USER':
+      return action.payload
     case 'NAME_CHANGED':
       return {...state, name: action.payload}
     case 'EMAIL_CHANGED':
@@ -18,6 +18,8 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, gender: action.payload}
     case 'STATUS_CHANGED':
       return {...state, status: action.payload}
+      case 'ERROR':
+        return {...state, error: action.payload}
     case 'SUCCESS':
       return INITIAL_STATE
     default:
