@@ -96,10 +96,7 @@ InputForm.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 60,
     backgroundColor: '#ffffff',
-    marginBottom: 150,
-    marginTop: 80,
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',

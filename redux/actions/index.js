@@ -1,10 +1,10 @@
 import axios from "axios"
 
-export const getData = () => {
+export const getData = (page) => {
   return dispatch => {
-    axios.get('https://gorest.co.in/public/v1/users')
+    axios.get(`https://gorest.co.in/public/v1/users?page=${page}`)
       .then((response) => {
-        dispatch({ type: 'GET_DATA', payload: response.data.data })
+        dispatch({ type: 'GET_DATA', payload: response.data })
       })
   }
 }
@@ -35,7 +35,7 @@ export const addUser = (uId, name, email, gender, status, callback) => {
       .then((response) => {
         callback()
         dispatch({ type: 'SUCCESS' })
-        dispatch({ type: 'NEW_USER', payload: response.data.data })
+        dispatch({ type: 'USER_ADDED', payload: response.data.data })
       }).catch((error) => {
         dispatch({ type: 'ERROR', payload: error.response.data.data })
       })
@@ -54,8 +54,8 @@ export const editUser = (uId, name, email, gender, status, callback) => {
       })
       .then((response) => {
         callback()
+        dispatch({ type: 'USER_EDITED', payload: response.data.data })
         dispatch({ type: 'SUCCESS' })
-        dispatch({ type: 'LIST_UPDATE', payload: response.data.data })
       }).catch((error) => {
         dispatch({ type: 'ERROR', payload: error.response.data.data })
       })

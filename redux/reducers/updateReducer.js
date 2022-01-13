@@ -1,13 +1,14 @@
 const INITIAL_STATE = {
-
+  newUserId: null,
+  editedUserId: null
 }
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'GET_DATA':
-      return action.payload
     case 'USER_ADDED':
-        console.log(state);
+      return { newUserId: action.payload.id }
+    case 'USER_EDITED':
+      return { editedUserId: action.payload.id }
     default:
       return state
   }

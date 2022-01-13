@@ -4,13 +4,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { deleteUser } from '../../redux/actions'
 
-const ItemList = ({ num, name, uid, deleteUser }) => {
+const ItemList = ({ name, uid, deleteUser, onDelete }) => {
   const { navigate } = useNavigation()
   return (
     <View style={styles.container}>
       <View style={styles.number}>
         <Text style={{ fontSize: 20 }}>
-          {num}
+          {uid}
         </Text>
       </View>
       <View style={styles.name}>
@@ -29,7 +29,10 @@ const ItemList = ({ num, name, uid, deleteUser }) => {
             <Text style={styles.btntext}>Edit</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteUser(uid)}>
+        <TouchableOpacity onPress={() => {
+          onDelete(uid)
+          deleteUser(uid)
+        }}>
           <View style={{ ...styles.btnview, backgroundColor: 'red' }}>
             <Text style={{...styles.btntext, color: '#ffffff'}}>Delete</Text>
           </View>
@@ -50,7 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     elevation: 10,
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 5,
     justifyContent: 'space-between'
   },
   btnview: {
@@ -68,12 +72,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   number: {
-    padding: 10,
+    padding: 5,
     margin: 5
   },
   name: {
     flexShrink: 1,
-    padding: 10,
+    padding: 5, 
     margin: 5
   }
 })
